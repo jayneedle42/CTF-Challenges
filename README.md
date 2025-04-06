@@ -2,4 +2,6 @@ In this repository you will find documentation of the steps taken to complete va
 
 ## OverTheWire War Games
 
-[Bandit][text.txt]
+[Bandit](OTW-Bandit.txt) - In Progress (26/33)
+
+More Coming Soon...
