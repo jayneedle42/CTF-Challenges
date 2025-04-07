@@ -465,4 +465,105 @@ Flag: iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
 Level 25 to Level 26
 ssh bandit25@bandit.labs.overthewire.org -p 2220
 Password: iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
-In progress……
+Ls
+ssh -i bandit26.sshkey bandit26@bandit -p 2220
+fail
+Check the shell of bandit 26
+cat /etc/passwd | grep bandit26
+cat /usr/bin/showtext
+This reveals the “more” function connected to the shell
+Make your terminal as small as possible (5 lines) and continue
+ssh -i bandit26.sshkey bandit26@bandit -p 2220
+V
+You can now resize your terminal
+:set shell=/bin/bash
+:shell
+Ls
+cat /etc/bandit\_pass/bandit26
+Flag: s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ
+Stay logged in for next challenge. 
+
+
+
+Level 26 to Level 27
+Already logged in from previous challenge
+Ls
+./bandit27-do
+Run a command as another user (assuming bandit27)
+./bandit27-do cat /etc/bandit_pass/bandit27
+Flag: upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB
+
+
+
+Level 27 to Level 28
+ssh bandit27@bandit.labs.overthewire.org -p 2220
+Password: upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB
+git clone -c core.sshCommand="ssh -p 2220" ssh://bandit27-git@localhost/home/bandit27-git/repo /tmp/bandit27repotest
+-c core.sshCommand="ssh -p 2220": This tells Git to use a specific SSH command with port 2220 for the connection.
+Since I only have permission to create directories and files within /tmp, I had to designate where I wanted to clong the repo to.
+ls /tmp/bandit27repotest
+cat /tmp/bandit27repotest/README
+Flag: Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN
+
+
+
+Level 28 to Level 29
+ssh bandit28@bandit.labs.overthewire.org -p 2220
+Password: Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN
+git clone -c core.sshCommand="ssh -p 2220" ssh://bandit28-git@localhost/home/bandit28-git/repo /tmp/bandit28repotest
+cat /tmp/bandit28repotest/README.md 
+cd /tmp/bandit28repotest
+git log
+Shows commit logs
+“Fix info leak” looks promising
+git show 817e303aa6c2b207ea043c7bba1bb7575dc4ea73
+Shows a specific commit
+Flag: 4pT1t5DENaYuqnqvadYs1oE4QLCdjmJ7
+
+
+
+Level 29 to Level 30
+ssh bandit29@bandit.labs.overthewire.org -p 2220
+Password: 4pT1t5DENaYuqnqvadYs1oE4QLCdjmJ7
+git clone -c core.sshCommand="ssh -p 2220" ssh://bandit29-git@localhost/home/bandit29-git/repo /tmp/bandit29repotest
+Cd /tmp/bandit29repotest
+Ls
+Cat README.md
+git log
+git show 6ac7796430c0f39290a0e29a4d32e5126544b022
+No passwords in products is interesting. Let’s check for other branches that my be working on it.
+git branch -a
+git switch dev
+Ls -la
+Cat README.md
+Flag: qp30ex3VLz5MDG1n91YowTv4Q8l7CDZL
+
+
+
+Level 30 to Level 31
+ssh bandit30@bandit.labs.overthewire.org -p 2220
+Password: qp30ex3VLz5MDG1n91YowTv4Q8l7CDZL
+git clone -c core.sshCommand="ssh -p 2220" ssh://bandit30-git@localhost/home/bandit30-git/repo /tmp/bandit230repotest
+Cd /tmp/bandit230repotest
+Ls -la
+Cat README.md
+git log
+git show acfc3c67816fc778c4aeb5893299451ca6d65a78
+Nothing helpful so far
+git tag -l
+List all tags: Tags are often used to mark specific points in Git history
+git show secret
+Flag: fb5S2xb7bRyFmAvQYQGEqsbhVyJqhnDy
+
+
+
+Level 31 to Level 32 - IN PROGRESS
+ssh bandit31@bandit.labs.overthewire.org -p 2220
+Password: fb5S2xb7bRyFmAvQYQGEqsbhVyJqhnDy
+
+
+
+Level 32 to Level 33 - IN PROGRESS
+ssh bandit32@bandit.labs.overthewire.org -p 2220
+Password: ??????
+
