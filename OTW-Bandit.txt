@@ -556,13 +556,35 @@ Flag: fb5S2xb7bRyFmAvQYQGEqsbhVyJqhnDy
 
 
 
-Level 31 to Level 32 - IN PROGRESS
+Level 31 to Level 32
 ssh bandit31@bandit.labs.overthewire.org -p 2220
 Password: fb5S2xb7bRyFmAvQYQGEqsbhVyJqhnDy
+git clone -c core.sshCommand="ssh -p 2220" ssh://bandit31-git@localhost/home/bandit31-git/repo /tmp/bandit31repotest
+cd /tmp/bandit31repotest
+Ls -la
+cat README.md
+nano key.txt
+ls
+git add key.txt
+git add -f key.txt
+git commit -m "Add key.txt"
+git push origin master
+Flag: 3O9RfhqyAlVBEZpVb6LYStshZoqoSx5K 
 
 
 
-Level 32 to Level 33 - IN PROGRESS
+Level 32 to Level 33
 ssh bandit32@bandit.labs.overthewire.org -p 2220
-Password: ??????
+Password: 3O9RfhqyAlVBEZpVb6LYStshZoqoSx5K 
+ls
+echo ‘ls’
+echo “ls”
+$(echo ls)
+/bin/ls
+ssh -p 2220 -T bandit32@bandit.labs.overthewire.org "cat /etc/bandit_pass/bandit33"
+I quickly realized no matter what I did this shell would convert my input into ASCII before executing it. So I started to research other ways to break out of a shell or start a new shell. That’s when I discovered a command to spawn a new shell that doesn’t require letters.
+$0
+cat /etc/bandit_pass/bandit33
+Flag: tQdtbs5D5i2vJwkO8mEyYEyTL8izoeJ0
+
 
