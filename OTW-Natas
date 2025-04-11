@@ -1,0 +1,58 @@
+OverTheWire - Natas
+
+
+Level 0
+
+I used the inspector tool to check the source code and found the flag in the body. 
+<!--The password for natas1 is 0nzCigAq7t2iALyvU9xcHlYN4MlkIwlq →
+
+
+
+Level 0 > Level 1
+
+Instead of right-clicking, I used the browser menu to open Developer Tools.
+I found the flag in the body of the html.
+<!--The password for natas2 is TguMNxKo1DSa1tujBLuZJnDUlCcUAPlI →
+
+
+
+Level 1 > Level 2
+
+Right-click, Inspect, and scan the source code. 
+I didn’t find the password in the source code, but I did find an image block linked to an image in the “file” directory. 
+I entered http://natas2.natas.labs.overthewire.org/files/ into my browser
+There I found a txt file. Inside it were usernames and passwords, including the flag.
+# username:password
+alice:BYNdCesZqW
+bob:jw2ueICLvT
+charlie:G5vCxkVV3m
+natas3:3gqisGdR0pjm6tpkDKdIWO2hSvchLeYH
+eve:zo4mJWyNj2
+mallory:9urtcpzBmH
+
+
+
+Level 2 > Level 3
+
+Right-click, Inspect, and scan the source code. 
+<!-- No more information leaks!! Not even Google will find it this time... →
+This line made me think it had something to do with blocking search engines, so I check the robots.txt file.
+User-agent: *
+Disallow: /s3cr3t/
+Search engines are not allowed to scan the /s3cr3t/ directory but that doesn’t mean I can access it manually. 
+http://natas3.natas.labs.overthewire.org/s3cr3t/
+In here I found another txt file with the flag. 
+natas4:QryZXc2e0zahULdHrtHxzyYkj59kUxLQ
+
+
+
+Level 3 > Level 4
+
+This level requires spoofing the HTTP referrer header
+I opened up the terminal and used a curl command to spoof the header.
+curl -u natas4:QryZXc2e0zahULdHrtHxzyYkj59kUxLQ \ -H "Referer: http://natas5.natas.labs.overthewire.org/" \ http://natas4.natas.labs.overthewire.org/
+I found the flag within the returned source code.
+Access granted. The password for natas5 is 0n35PkggAPm2zbEpOU802c0x0Msn1ToK
+
+Level 4 > Level 5
+????
