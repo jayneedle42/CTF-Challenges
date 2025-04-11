@@ -4,6 +4,6 @@ In this repository you will find documentation of the steps taken to complete va
 
 [Bandit](OTW-Bandit.txt) - Level 0 to Level 33 (Completed)
 
-[Natas](OTW-Natas.txt) - Level to Level 4 (In Progress)
+[Natas](OTW-Natas.txt) - Level 0 to Level 4 (In Progress)
 
 More Coming Soon...
