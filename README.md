@@ -2,6 +2,8 @@ In this repository you will find documentation of the steps taken to complete va
 
 ## OverTheWire War Games
 
-[Bandit](OTW-Bandit.txt) - In Progress (30/33)
+[Bandit](OTW-Bandit.txt) - Level 0 to Level 33 (Completed)
+
+[Natas](OTW-Natas.txt) - Level to Level 4 (In Progress)
 
 More Coming Soon...
